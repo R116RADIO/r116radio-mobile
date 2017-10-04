@@ -11,7 +11,7 @@ platform :ios do
 
     $username = 'r116radio@gmail.com'
     $bundle_name = 'com.r116.radio'
-    $signer = 'iPhone Developer: Robert Jakech (GJJFC4KBKT)'
+    $signer = 'iPhone Distribution: Robert Jakech (U37JYWRQ74)'
 
     $devices = {
         davidIphone:'d83924342509e618dcfe8ce700c6615726477aa7'
@@ -31,7 +31,7 @@ platform :ios do
       export_method: 'development',
       silent: true,
       clean: true,
-      codesigning_identity: $signer,
+      codesigning_identity: 'iPhone Developer: Robert Jakech (GJJFC4KBKT)',
       project:$xc_project_path
     )
 
@@ -98,18 +98,6 @@ platform :ios do
 
     testflight(changelog: "Add rocket emoji")   # upload to testflight
 
-    slack(
-      slack_url: 'https://hooks.slack.com/services/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',
-      channel: "beta-release",
-      message: "New ? release built for testflight",
-      success: true,
-      payload:{
-        Version:version,
-        Build:build_num,
-        Release_Notes:notes
-      }
-    )
-
   end ################## end #####################
 
   ########## EXPERIMENTAL ############################
@@ -119,7 +107,6 @@ platform :ios do
 
       apk_path = values[:apk_path] ? values[:apk_path] : "../android/app/build/outputs/apk/app-debug.apk"
       sh "adb -d install -r #{apk_path}"
-
 
   end ##################### end ######################
 
