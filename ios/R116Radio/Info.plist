@@ -37,10 +37,10 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>R116Radio requires access to location services.</string>
-  <key>NSMicrophoneUsageDescription</key>
-  <string>TieiT requires access to microphone services.</string>
-  <key>NSSpeechRecognitionUsageDescription</key>
-  <string>TieiT requires access to speech recognition services.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>R116Radio requires access to microphone services.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>R116Radio requires access to speech recognition services.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>HKGrotesk-Bold.otf</string>
@@ -53,6 +53,10 @@
 		<string>HKGrotesk-Regular.otf</string>
 		<string>HKGrotesk-SemiBold.otf</string>
 		<string>HKGrotesk-SemiBoldItalic.otf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
