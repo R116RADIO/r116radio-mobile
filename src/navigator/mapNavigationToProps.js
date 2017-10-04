@@ -2,14 +2,7 @@
 
 import type { Navigator } from 'AppTypes';
 import { Platform } from 'react-native';
-import { escapeScreenName } from 'AppUtilities';
 import { debounce } from 'lodash';
-import { startTutorialScene } from './Navigator';
-import { WHITE } from 'AppColors';
-
-import {
-  LOGIN_SCENE
-} from './constants';
 
 type NavigationEvent<T> = {
   id: T,
@@ -39,7 +32,7 @@ type MapParams = {
   screenDidDisappear: SetNavigationEvent<'didDisappear'>,
 };
 
-const BACK_ICON = require('img/icons/nav_bar/icon_back.png');
+const BACK_ICON = require('img/buttons/icon_back.png');
 
 const ACTION_DELAY = 200;
 const IGNORE_DEBOUNCE_LIST = [
@@ -56,14 +49,6 @@ const IGNORE_DEBOUNCE_LIST = [
 function getSceneNavigatorStyle(scene: string) {
   const navigatorParams = {};
   switch (scene) {
-    case escapeScreenName(LOGIN_SCENE):
-      if (Platform.OS === 'ios') {
-        navigatorParams.statusBarTextColorScheme = 'light';
-      } else {
-        navigatorParams.statusBarTextColorScheme = 'dark';
-        navigatorParams.statusBarColor = WHITE;
-      }
-      break;
     default:
       navigatorParams.statusBarTextColorScheme = 'light';
       break;
@@ -95,11 +80,7 @@ export default function (navigation: Navigator): MapParams {
       navigation.pop();
     },
     replaceCurrentSceneProps: () => {},
-    resetRouteStack: (tabIndex: number, passProps: ?Object) => {
-      if (passProps && passProps.logout) {
-        startTutorialScene();
-        return;
-      }
+    resetRouteStack: (tabIndex: number) => {
       navigation.popToRoot();
       navigation.switchToTab({ tabIndex });
     },

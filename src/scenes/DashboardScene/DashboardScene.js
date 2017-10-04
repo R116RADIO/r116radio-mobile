@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { DashboardContainer } from 'AppComponents';
+import { DashboardContainer } from 'AppContainers';
 
 class DashboardScene extends PureComponent {
 

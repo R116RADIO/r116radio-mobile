@@ -21,30 +21,30 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
-
-    NSURL *jsCodeLocation;
-
-    for (NSString* family in [UIFont familyNames])
+  
+  NSURL *jsCodeLocation;
+  
+  for (NSString* family in [UIFont familyNames])
+  {
+    NSLog(@"%@", family);
+    for (NSString* name in [UIFont fontNamesForFamilyName: family])
     {
-      NSLog(@"%@", family);
-      for (NSString* name in [UIFont fontNamesForFamilyName: family])
-      {
-        NSLog(@" %@", name);
-      }
+      NSLog(@" %@", name);
     }
-
-  #ifdef DEBUG
-    jsCodeLocation = [NSURL URLWithString:@"http://192.168.0.168:8081/index.ios.bundle?platform=ios&dev=true"];
+  }
+  
+#ifdef DEBUG
+  jsCodeLocation = [NSURL URLWithString:@"http://192.168.0.168:8081/index.ios.bundle?platform=ios&dev=true"];
   //  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
-  #else
-    jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
-  #endif
-
-    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    self.window.backgroundColor = [UIColor whiteColor];
-    [[RCCManager sharedInstance] initBridgeWithBundleURL:jsCodeLocation launchOptions:launchOptions];
-
-    return YES;
+#else
+  jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+#endif
+  
+  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+  self.window.backgroundColor = [UIColor whiteColor];
+  [[RCCManager sharedInstance] initBridgeWithBundleURL:jsCodeLocation launchOptions:launchOptions];
+  
+  return YES;
 }
 
 @end

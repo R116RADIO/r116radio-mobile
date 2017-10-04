@@ -4,8 +4,7 @@ import React from 'react';
 
 import { Provider } from 'AppRedux';
 import { overrideLogs } from 'AppUtilities';
-import { rootConnector, FirebaseWrapper } from 'AppConnectors';
-import { firebaseConfig } from 'AppConfig';
+import { rootConnector } from 'AppConnectors';
 
 import mapNavigatorToProps from './mapNavigationToProps';
 
@@ -20,12 +19,10 @@ export default function (Component: React.Element<*>): Function {
 
       return (
         <Provider>
-          <FirebaseWrapper config={firebaseConfig}>
-            <AppLevelEnhanced
-              {...props}
-              {...mapNavigatorToProps(props.navigator)}
-            />
-          </FirebaseWrapper>
+          <AppLevelEnhanced
+            {...props}
+            {...mapNavigatorToProps(props.navigator)}
+          />
         </Provider>
       );
     };
