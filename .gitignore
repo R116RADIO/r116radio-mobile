@@ -1,7 +1,8 @@
 # OSX
 #
 .DS_Store
-
+coverage/
+.jest-cache
 # Xcode
 #
 build/
@@ -20,34 +21,48 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
-project.xcworkspace
+# project.xcworkspace
 
 # Android/IntelliJ
 #
-build/
 .idea
 .gradle
 local.properties
 *.iml
+*.cer
+*.mobileprovision
+# development files
 
-# node.js
 #
 node_modules/
 npm-debug.log
-yarn-error.log
 
 # BUCK
 buck-out/
 \.buckd/
-*.keystore
+android/app/libs
+android/keystores/debug.keystore
+android/app/keystore.jks
+android/app/src/main/assets/crashlytics-build.properties
+android/app/src/main/res/values/com_crashlytics_export_strings.xml
 
-# fastlane
+# R116Radio
+appconfig.js
+Preview.html
+dump.rdb
+yarn.lock
+
+*.log
+*.apk
+
+
+# Haul
 #
-# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
-# screenshots whenever they are needed.
-# For more information about the recommended setup visit:
-# https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Gitignore.md
+haul-debug.log
+.happypack
+/ios/R116Radio.app.dSYM.zip
+/ios/4JXVL74DL7.cer
 
-fastlane/report.xml
-fastlane/Preview.html
-fastlane/screenshots
+/fastlane/report.xml
+/R116Radio.app.dSYM.zip
+/.vscode/
