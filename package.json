@@ -11,7 +11,10 @@
     "clean": "npm start -- --reset-cache",
     "flow": "flow",
     "flow:check": "flow check",
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix",
+    "appconfig:clean": "rm -f ./appconfig.js",
+    "appconfig:local": "npm run appconfig:clean && cp ./appconfig.js.local appconfig.js",
+    "appconfig:prod": "npm run appconfig:clean && cp ./appconfig.js.prod appconfig.js"
   },
   "dependencies": {
     "immutability-helper": "2.2.0",
@@ -26,6 +29,7 @@
     "react-native-animatable": "1.2.4",
     "react-native-device-info": "0.11.0",
     "react-native-fetch-blob": "0.10.8",
+    "react-native-image-progress": "1.0.1",
     "react-native-linear-gradient": "2.3.0",
     "react-native-navigation": "1.1.235",
     "react-native-permissions": "1.0.0",
@@ -96,6 +100,7 @@
     "jest": "20.0.4",
     "jest-enzyme": "3.5.0",
     "jest-repl": "19.0.2",
+    "my-local-ip": "1.0.0",
     "react-addons-test-utils": "15.4.0",
     "react-apollo": "1.4.2",
     "react-devtools": "2.1.3",
