@@ -6,7 +6,8 @@ import {
   View,
   Image,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
+  Platform
 } from 'react-native';
 
 import { CachedImage as RNImage } from 'AppUtilities';
@@ -21,6 +22,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'transparent'
   },
+  thumbView: {
+    width: WINDOW_WIDTH * 0.33 + 3,
+    height: WINDOW_WIDTH * 0.33 + 3,
+  },
   thumb: {
     width: WINDOW_WIDTH * 0.33,
     height: WINDOW_WIDTH * 0.33,
@@ -33,8 +38,8 @@ const styles = StyleSheet.create({
     marginTop: 30
   },
   playButton: {
-    width: WINDOW_WIDTH * 0.17,
-    height: WINDOW_WIDTH * 0.17,
+    width: 70,
+    height: 70,
     resizeMode: 'contain'
   },
   detailContainer: {
@@ -43,17 +48,28 @@ const styles = StyleSheet.create({
     height: WINDOW_WIDTH * 0.17 - 5
   },
   title: {
-    width: WINDOW_WIDTH * 0.3,
-    fontSize: 18,
+    ...Platform.select({
+      ios: {
+        fontSize: 18,
+      },
+      android: {
+        fontSize: 16,
+      }
+    }),
     color: WHITE
   },
   artist: {
-    width: WINDOW_WIDTH * 0.3,
-    fontSize: 16,
+    ...Platform.select({
+      ios: {
+        fontSize: 16,
+      },
+      android: {
+        fontSize: 14,
+      }
+    }),
     color: WHITE
   },
   playlistTitle: {
-    width: WINDOW_WIDTH * 0.3,
     fontSize: 14,
     color: GRAY
   }
@@ -83,19 +99,21 @@ class PlayerForm extends PureComponent {
 
     return (
       <View style={styles.container}>
-        <RNImage
-          style={styles.thumb}
-          resizeMode={'contain'}
-          indicator={Progress.Circle}
-          indicatorProps={{
-            size: 30,
-            thickness: 3,
-            borderWidth: 3,
-            color: GRAY
-          }}
-          source={thumbImage}
-          threshold={50}
-        />
+        <View style={styles.thumbView}>
+          <RNImage
+            style={styles.thumb}
+            resizeMode={'contain'}
+            indicator={Progress.Circle}
+            indicatorProps={{
+              size: 30,
+              thickness: 3,
+              borderWidth: 3,
+              color: GRAY
+            }}
+            source={thumbImage}
+            threshold={50}
+          />
+        </View>
         <View style={styles.infoContainer}>
           <TouchableOpacity
             activeOpacity={0.8}

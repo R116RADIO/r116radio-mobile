@@ -6,7 +6,8 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  Animated
+  Animated,
+  Platform
 } from 'react-native';
 
 import { HKGroteskSemiBold, HKGroteskRegular } from 'AppFonts';
@@ -39,7 +40,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   tabItemTitle: {
-    fontSize: 18,
+    ...Platform.select({
+      ios: {
+        fontSize: 18,
+      },
+      android: {
+        fontSize: 14,
+      }
+    }),
     color: WHITE
   },
   slider: {

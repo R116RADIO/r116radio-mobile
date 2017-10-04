@@ -1,6 +1,12 @@
 package com.r116radio;
 
-import android.app.Application;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.util.Log;
+import android.view.WindowManager;
+import android.content.Intent;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
@@ -8,33 +14,48 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 
+import com.RNFetchBlob.RNFetchBlobPackage;
+import com.reactnativenavigation.NavigationApplication;
+import com.reactnativenavigation.controllers.ActivityCallbacks;
+import com.BV.LinearGradient.LinearGradientPackage;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.audioStreaming.ReactNativeAudioStreamingPackage;
+
 import java.util.Arrays;
 import java.util.List;
 
-public class MainApplication extends Application implements ReactApplication {
+public class MainApplication extends NavigationApplication {
 
-  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
-    @Override
-    public boolean getUseDeveloperSupport() {
+  @Override
+    public boolean isDebug() {
       return BuildConfig.DEBUG;
     }
 
+    @Nullable
     @Override
-    protected List<ReactPackage> getPackages() {
+    public List<ReactPackage> createAdditionalReactPackages() {
       return Arrays.<ReactPackage>asList(
-          new MainReactPackage()
+          new RNFetchBlobPackage(),
+          new LinearGradientPackage(),
+          new RNDeviceInfo(),
+          new ReactNativeAudioStreamingPackage()
       );
     }
-  };
 
-  @Override
-  public ReactNativeHost getReactNativeHost() {
-    return mReactNativeHost;
-  }
+    @Override
+    public void onCreate() {
+      super.onCreate();
 
-  @Override
-  public void onCreate() {
-    super.onCreate();
-    SoLoader.init(this, /* native exopackage */ false);
-  }
+      SoLoader.init(this, /* native exopackage */ false);
+
+      final NavigationApplication sharedInstance = this;
+
+      setActivityCallbacks(new ActivityCallbacks() {
+        @Override
+        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+          super.onActivityCreated(activity, savedInstanceState);
+          activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        }
+      });
+    }
 }
