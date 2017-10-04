@@ -754,10 +754,12 @@
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
 						DevelopmentTeam = U37JYWRQ74;
+						ProvisioningStyle = Manual;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = U37JYWRQ74;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -1266,6 +1268,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = U37JYWRQ74;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -1279,6 +1282,7 @@
 					"-lc++",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/R116Radio.app/R116Radio";
 			};
 			name = Debug;
@@ -1287,6 +1291,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = U37JYWRQ74;
 				INFOPLIST_FILE = R116RadioTests/Info.plist;
@@ -1297,6 +1303,7 @@
 					"-lc++",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/R116Radio.app/R116Radio";
 			};
 			name = Release;
@@ -1306,6 +1313,7 @@
 			baseConfigurationReference = 1FB84FD827F2C11CEB2F41B3 /* Pods-R116Radio.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = U37JYWRQ74;
@@ -1326,6 +1334,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.r116.radio;
 				PRODUCT_NAME = R116Radio;
+				PROVISIONING_PROFILE = "19e2c55d-2ed6-472c-b9df-a49a13bca5a5";
+				PROVISIONING_PROFILE_SPECIFIER = "r116radio app dev provisioning";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1335,6 +1345,8 @@
 			baseConfigurationReference = 6FD82659F2C4E8BD0F7627FB /* Pods-R116Radio.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = U37JYWRQ74;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1354,6 +1366,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.r116.radio;
 				PRODUCT_NAME = R116Radio;
+				PROVISIONING_PROFILE = "b7e6e543-2df1-4f55-a44f-000949142702";
+				PROVISIONING_PROFILE_SPECIFIER = "r116radio app dist provisioning";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
