@@ -16,15 +16,18 @@ import {
 import {
   App_Service
 } from 'AppServices';
-import { apiConfig } from 'AppConfig';
 
-export function* asyncFetchAudios({ resolve, reject }) {
+import { isArray } from 'lodash';
+
+export function* asyncFetchAudios({ payload, resolve, reject }) {
+  const { url } = payload;
+
   try {
     const response = yield call(App_Service,
-      { url: apiConfig.endpoint, method: 'GET', params: null });
+      { url, method: 'GET', params: null });
 
-    if (response.data) {
-      yield put(audioActionCreators.fetchAudiosSuccess(response.data));
+    if (response.data && isArray(response.data)) {
+      yield put(audioActionCreators.fetchAudiosSuccess(response.data[0]));
       resolve();
     } else {
       reject();

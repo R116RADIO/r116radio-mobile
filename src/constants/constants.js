@@ -9,6 +9,7 @@ export const WINDOW_WIDTH = width;
 export const WINDOW_HEIGHT = height;
 export const STATUSBAR_HEIGHT = isIOS ? 20 : StatusBar.currentHeight;
 export const NAVBAR_HEIGHT = WINDOW_HEIGHT * 0.066;
+export const TAB_BAR_HEIGHT = WINDOW_HEIGHT * 0.08;
 
 export const SYSTEM_MESSAGES = {
   FROM_REQUEST: {

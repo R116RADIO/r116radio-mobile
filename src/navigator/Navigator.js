@@ -3,7 +3,8 @@
 import { Navigation } from 'react-native-navigation';
 import { NativeModules } from 'react-native';
 import {
-  DASHBOARD_SCENE
+  DASHBOARD_SCENE,
+  SPLASH_SCENE
 } from './constants';
 
 import registerScreens from './registerScreens';
@@ -23,6 +24,23 @@ export function startApp() {
       navigatorStyle: {
         navBarHidden: true,
         statusBarHidden: false,
+        statusBarTextColorScheme: 'light',
+      }
+    },
+    appStyle: {
+      orientation: 'portrait'
+    },
+    animationType: 'fade',
+  });
+}
+
+export function startSplashScene() {
+  Navigation.startSingleScreenApp({
+    screen: {
+      screen: SPLASH_SCENE,
+      navigatorStyle: {
+        navBarHidden: true,
+        statusBarHidden: true,
         statusBarTextColorScheme: 'light',
       }
     },

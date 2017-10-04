@@ -41,6 +41,7 @@
 		6316B2651F85438800C7380D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6316B2641F85438800C7380D /* AVFoundation.framework */; };
 		6382F0121F855218003E1001 /* libReactNativeAudioStreaming.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6382F0111F85520E003E1001 /* libReactNativeAudioStreaming.a */; };
 		6382F0151F85526A003E1001 /* libStreamingKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6382EFEB1F85518C003E1001 /* libStreamingKit.a */; };
+		6382F0A71F856BE2003E1001 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6382F0A41F856BDA003E1001 /* libART.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		939975E40890779946FB5855 /* libPods-R116Radio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 62A09D827A6BE05F3030F4D9 /* libPods-R116Radio.a */; };
 /* End PBXBuildFile section */
@@ -291,6 +292,20 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = ReactNativeAudioStreaming;
 		};
+		6382F0A31F856BDA003E1001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6382F09E1F856BDA003E1001 /* ART.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0CF68AC11AF0540F00FF9E5C;
+			remoteInfo = ART;
+		};
+		6382F0A51F856BDA003E1001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6382F09E1F856BDA003E1001 /* ART.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 323A12871E5F266B004975B8;
+			remoteInfo = "ART-tvOS";
+		};
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
@@ -349,6 +364,7 @@
 		6382EFE11F85518C003E1001 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = "../node_modules/react-native-audio-streaming/ios/Pods/Pods.xcodeproj"; sourceTree = "<group>"; };
 		6382F00C1F85520E003E1001 /* ReactNativeAudioStreaming.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeAudioStreaming.xcodeproj; path = "../node_modules/react-native-audio-streaming/ios/ReactNativeAudioStreaming.xcodeproj"; sourceTree = "<group>"; };
 		6382F0141F855257003E1001 /* libStreamingKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libStreamingKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		6382F09E1F856BDA003E1001 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		6FD82659F2C4E8BD0F7627FB /* Pods-R116Radio.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-R116Radio.release.xcconfig"; path = "Pods/Target Support Files/Pods-R116Radio/Pods-R116Radio.release.xcconfig"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
@@ -367,6 +383,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6382F0A71F856BE2003E1001 /* libART.a in Frameworks */,
 				6382F0151F85526A003E1001 /* libStreamingKit.a in Frameworks */,
 				6382F0121F855218003E1001 /* libReactNativeAudioStreaming.a in Frameworks */,
 				6316B2651F85438800C7380D /* AVFoundation.framework in Frameworks */,
@@ -596,6 +613,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		6382F09F1F856BDA003E1001 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6382F0A41F856BDA003E1001 /* libART.a */,
+				6382F0A61F856BDA003E1001 /* libART-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		6B53B84662173D7127A1066B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -617,6 +643,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				6382F09E1F856BDA003E1001 /* ART.xcodeproj */,
 				6382F00C1F85520E003E1001 /* ReactNativeAudioStreaming.xcodeproj */,
 				6382EFE11F85518C003E1001 /* Pods.xcodeproj */,
 				6316B2211F853A3A00C7380D /* ReactNativeNavigation.xcodeproj */,
@@ -746,6 +773,10 @@
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = 6382F09F1F856BDA003E1001 /* Products */;
+					ProjectRef = 6382F09E1F856BDA003E1001 /* ART.xcodeproj */;
+				},
 				{
 					ProductGroup = 6316B1F21F85390200C7380D /* Products */;
 					ProjectRef = 6316B1F11F85390200C7380D /* BVLinearGradient.xcodeproj */;
@@ -1064,6 +1095,20 @@
 			fileType = archive.ar;
 			path = libReactNativeAudioStreaming.a;
 			remoteRef = 6382F0101F85520E003E1001 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6382F0A41F856BDA003E1001 /* libART.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libART.a;
+			remoteRef = 6382F0A31F856BDA003E1001 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6382F0A61F856BDA003E1001 /* libART-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libART-tvOS.a";
+			remoteRef = 6382F0A51F856BDA003E1001 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {

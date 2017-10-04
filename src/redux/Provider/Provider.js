@@ -8,7 +8,7 @@ import createStore from '../store';
 
 let store: ?Store<*>;
 
-class ATMStoreProvider extends PureComponent {
+class RAudioStoreProvider extends PureComponent {
   getChildContext(): { store: Store<*> } {
     return {
       store,
@@ -29,4 +29,4 @@ class ATMStoreProvider extends PureComponent {
   }
 }
 
-export default ATMStoreProvider;
+export default RAudioStoreProvider;

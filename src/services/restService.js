@@ -4,6 +4,7 @@ import { set, isEmpty } from 'lodash';
 
 export async function App_Service({ url, method, params }) {
   const headers = {};
+
   set(headers, 'Accept', 'application/json');
   set(headers, 'Content-Type', 'application/json');
 

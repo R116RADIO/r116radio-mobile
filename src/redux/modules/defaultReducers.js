@@ -1,6 +1,6 @@
 // @flow
 
-const audios = [];
+const audios = {};
 
 export const defaultReducers = {
   audios

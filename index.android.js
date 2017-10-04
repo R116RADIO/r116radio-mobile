@@ -1,6 +1,6 @@
 // @flow
 
-import { startApp } from 'AppNavigator';
+import { startSplashScene } from 'AppNavigator';
 import { CachedImage } from 'AppUtilities';
 import { setStatusBarHidden } from 'AppUtilities';
 
@@ -11,4 +11,4 @@ if (__DEV__) {
 setStatusBarHidden(true);
 
 CachedImage.init()
-  .then(() => startApp());
+  .then(() => startSplashScene());
