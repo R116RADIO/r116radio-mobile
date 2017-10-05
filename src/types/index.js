@@ -1,5 +1,0 @@
-/**
- * @flow
- * @providesModule AppTypes
- */
-
