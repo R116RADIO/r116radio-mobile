@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 import {
   View,
   StyleSheet,
-  Image
+  Image,
+  NetInfo
 } from 'react-native';
 
 import { connectAudios } from 'AppRedux';
@@ -46,8 +47,21 @@ class DashboardContainer extends PureComponent {
     this.checkProps(this.props);
   }
 
+  componentWillMount() {
+    NetInfo.isConnected.addEventListener(
+      'change',
+      this.connectionStatusChangeListener
+    );
+  }
+
   componentWillUnmount() {
+    // stop audio when app is closed
     ReactNativeAudioStreaming.stop();
+
+    NetInfo.isConnected.removeEventListener(
+      'change',
+      this.connectionStatusChangeListener
+    );
   }
 
   componentWillReceiveProps(nextProps) {
@@ -56,6 +70,20 @@ class DashboardContainer extends PureComponent {
       this.checkProps(nextProps);
     }
   }
+
+  connectionStatusChangeListener = (isConnected) => {
+    AlertMessage.showMessage(null, isConnected ? 'online' : 'offline');
+    if (isConnected) {
+      this.setState({ isPlaying: true });
+      ReactNativeAudioStreaming.play(this.state.selectedMusicSource,
+        { showIniOSMediaCenter: true, showInAndroidNotifications: true });
+    } else {
+      if (this.state.isPlaying) {
+        this.setState({ isPlaying: false });
+        ReactNativeAudioStreaming.pause();
+      }
+    }
+  };
 
   onStreamLineChanged = (streamUrl) => {
     const { fetchAudios } = this.props;
