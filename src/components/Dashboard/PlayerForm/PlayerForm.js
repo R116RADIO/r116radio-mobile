@@ -134,10 +134,7 @@ class PlayerForm extends PureComponent {
     const { fetchAudios } = this.props;
 
     promisify(fetchAudios, { url: channel })
-      .then((data) => {
-        console.log('data = ', data);
-        this.setState({ song: data });
-      });
+      .then((data) => this.setState({ song: data }));
   };
 
   render() {
