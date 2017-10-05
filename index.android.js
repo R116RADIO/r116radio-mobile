@@ -1,14 +1,8 @@
 // @flow
 
-import { startSplashScene } from 'AppNavigator';
-import { CachedImage } from 'AppUtilities';
-import { setStatusBarHidden } from 'AppUtilities';
+import App from './app';
+import {
+  AppRegistry
+} from 'react-native';
 
-if (__DEV__) {
-  require('react-devtools');
-}
-
-setStatusBarHidden(true);
-
-CachedImage.init()
-  .then(() => startSplashScene());
+AppRegistry.registerComponent('R116Radio', () => App);

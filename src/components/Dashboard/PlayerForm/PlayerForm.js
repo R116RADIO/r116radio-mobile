@@ -7,7 +7,7 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  Platform
+  Platform,
 } from 'react-native';
 
 import { CachedImage as RNImage } from 'AppUtilities';
@@ -81,8 +81,13 @@ class PlayerForm extends PureComponent {
     const {
       dataSource: song,
       isPlaying,
-      onPlayButtonClicked
+      onPlayButtonClicked,
+      isPortrait,
+      screenWidth,
+      screenHeight
     } = this.props;
+
+    const rWidth = isPortrait ? screenWidth : screenHeight;
 
     const thumbUri = get(song, 'track.imageurl');
     const thumbImage = isEmpty(thumbUri)
@@ -98,10 +103,10 @@ class PlayerForm extends PureComponent {
       : require('img/buttons/btn_play.png');
 
     return (
-      <View style={styles.container}>
-        <View style={styles.thumbView}>
+      <View style={[styles.container, { flexDirection: isPortrait ? 'column' : 'row' }]}>
+        <View style={[styles.thumbView, { width: rWidth * 0.33 + 3, height: rWidth * 0.33 + 3 }]}>
           <RNImage
-            style={styles.thumb}
+            style={[styles.thumb, { width: rWidth * 0.33, height: rWidth * 0.33 }]}
             resizeMode={'contain'}
             indicator={Progress.Circle}
             indicatorProps={{
@@ -114,7 +119,10 @@ class PlayerForm extends PureComponent {
             threshold={50}
           />
         </View>
-        <View style={styles.infoContainer}>
+        <View style={[styles.infoContainer,
+          { marginTop: isPortrait ? 30 : 0, marginLeft: isPortrait ? 0 : 30 }
+          ]}
+        >
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={onPlayButtonClicked}
@@ -124,7 +132,7 @@ class PlayerForm extends PureComponent {
               source={playButtonImage}
             />
           </TouchableOpacity>
-          <View style={styles.detailContainer}>
+          <View style={[styles.detailContainer, { height: rWidth * 0.17 - 5 }]}>
             <HKGroteskBold numberOfLines={1} style={styles.title}>
               {isEmpty(title) ? 'Unknown' : title}
             </HKGroteskBold>
@@ -143,11 +151,15 @@ class PlayerForm extends PureComponent {
 
 PlayerForm.propTypes = {
   dataSource: PropTypes.object,
-  onPlayButtonClicked: PropTypes.func.isRequired
+  onPlayButtonClicked: PropTypes.func.isRequired,
+  isPortrait: PropTypes.bool,
+  screenWidth: PropTypes.number.isRequired,
+  screenHeight: PropTypes.number.isRequired
 };
 
 PlayerForm.defaultProps = {
-  dataSource: {}
+  dataSource: {},
+  isPortrait: true
 };
 
 export default PlayerForm;

@@ -7,11 +7,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   Animated,
-  Platform
+  Platform,
 } from 'react-native';
 
 import { HKGroteskSemiBold, HKGroteskRegular } from 'AppFonts';
-import { WINDOW_WIDTH, TAB_BAR_HEIGHT } from 'AppConstants';
+import { WINDOW_WIDTH } from 'AppConstants';
 import { WHITE, DARK_RED, DARKER_RED } from 'AppColors';
 import { channels } from 'AppConfig';
 
@@ -19,6 +19,7 @@ const TAB_ITEM_WIDTH = WINDOW_WIDTH / channels.length;
 
 const styles = StyleSheet.create({
   container: {
+    width: WINDOW_WIDTH,
     backgroundColor: 'transparent'
   },
   title: {
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
   },
   tabItem: {
     width: TAB_ITEM_WIDTH,
-    height: TAB_BAR_HEIGHT,
+    height: 50,
     backgroundColor: DARK_RED,
     alignSelf: 'center',
     justifyContent: 'center',
@@ -72,7 +73,7 @@ class PlaylistTabView extends PureComponent {
 
   changeStreamLine = (channel, index) => {
     const { currentChannel } = this.state;
-    const { onStreamLineChanged } = this.props;
+    const { onStreamLineChanged, screenWidth } = this.props;
 
     if (channel === currentChannel) {
       return;
@@ -80,7 +81,7 @@ class PlaylistTabView extends PureComponent {
 
     this.setState({ currentChannel: channel });
 
-    const newPosition = index * TAB_ITEM_WIDTH;
+    const newPosition = index * (screenWidth / 3);
 
     Animated.timing(
       this.state.sliderPosition, {
@@ -94,13 +95,14 @@ class PlaylistTabView extends PureComponent {
 
   render() {
     const { currentChannel, sliderPosition } = this.state;
+    const { screenWidth } = this.props;
 
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, { width: screenWidth }]}>
         <HKGroteskRegular style={styles.title}>
           Choose your genre:
         </HKGroteskRegular>
-        <View style={styles.contentView}>
+        <View style={[styles.contentView, { width: screenWidth }]}>
           {channels.map((channel, index) => {
             return (
               <TouchableOpacity
@@ -108,7 +110,8 @@ class PlaylistTabView extends PureComponent {
                 activeOpacity={0.9}
                 onPress={() => this.changeStreamLine(channel.url, index)}
                 style={[styles.tabItem,
-                  { backgroundColor: currentChannel === channel.url ? DARKER_RED : DARK_RED }]
+                  { width: screenWidth / channels.length,
+                    backgroundColor: currentChannel === channel.url ? DARKER_RED : DARK_RED }]
                 }
               >
                 <HKGroteskSemiBold style={styles.tabItemTitle}>
@@ -118,14 +121,19 @@ class PlaylistTabView extends PureComponent {
             );
           })}
         </View>
-        <Animated.View style={[styles.slider, { left: sliderPosition }]} />
+        <Animated.View
+          style={[styles.slider,
+            { width: screenWidth / channels.length, left: sliderPosition }
+            ]}
+        />
       </View>
     );
   }
 }
 
 PlaylistTabView.propTypes = {
-  onStreamLineChanged: PropTypes.func.isRequired
+  onStreamLineChanged: PropTypes.func.isRequired,
+  screenWidth: PropTypes.number.isRequired
 };
 
 export default PlaylistTabView;

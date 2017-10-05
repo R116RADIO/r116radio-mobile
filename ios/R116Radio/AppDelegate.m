@@ -9,42 +9,35 @@
 
 #import "AppDelegate.h"
 
-#import <AVFoundation/AVFoundation.h>
-
-#import "RCCManager.h"
-
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+
+#import "Orientation.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
-  
   NSURL *jsCodeLocation;
   
-  for (NSString* family in [UIFont familyNames])
-  {
-    NSLog(@"%@", family);
-    for (NSString* name in [UIFont fontNamesForFamilyName: family])
-    {
-      NSLog(@" %@", name);
-    }
-  }
+  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
   
-#ifdef DEBUG
-  jsCodeLocation = [NSURL URLWithString:@"http://192.168.0.168:8081/index.ios.bundle?platform=ios&dev=true"];
-  //  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
-#else
-  jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
-#endif
+  RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
+                                                      moduleName:@"R116Radio"
+                                               initialProperties:nil
+                                                   launchOptions:launchOptions];
+  rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
   
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  self.window.backgroundColor = [UIColor whiteColor];
-  [[RCCManager sharedInstance] initBridgeWithBundleURL:jsCodeLocation launchOptions:launchOptions];
-  
+  UIViewController *rootViewController = [UIViewController new];
+  rootViewController.view = rootView;
+  self.window.rootViewController = rootViewController;
+  [self.window makeKeyAndVisible];
   return YES;
+}
+
+-(UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window{
+  return [Orientation getOrientation];
 }
 
 @end
