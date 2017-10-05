@@ -66,9 +66,23 @@ class PlaylistTabView extends PureComponent {
     super(props);
 
     this.state = {
+      index: 0,
       currentChannel: channels[0].url,
       sliderPosition: new Animated.Value(0)
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.screenWidth !== nextProps.screenWidth) {
+      const newPosition = this.state.index * (nextProps.screenWidth / 3);
+
+      Animated.timing(
+        this.state.sliderPosition, {
+          toValue: newPosition,
+          duration: 100
+        }
+      ).start();
+    }
   }
 
   changeStreamLine = (channel, index) => {
@@ -79,7 +93,7 @@ class PlaylistTabView extends PureComponent {
       return;
     }
 
-    this.setState({ currentChannel: channel });
+    this.setState({ index, currentChannel: channel });
 
     const newPosition = index * (screenWidth / 3);
 

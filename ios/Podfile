@@ -3,5 +3,4 @@
 
 target 'R116Radio' do
   pod 'StreamingKit', :git => 'https://github.com/tlenclos/StreamingKit.git', :branch => 'icecast'
-
 end

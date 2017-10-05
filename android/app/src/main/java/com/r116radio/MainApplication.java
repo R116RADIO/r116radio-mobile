@@ -15,6 +15,7 @@ import com.github.yamill.orientation.OrientationPackage;
 import com.audioStreaming.ReactNativeAudioStreamingPackage;
 import com.audioStreaming.ReactNativeAudioStreamingPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
+import com.ocetnik.timer.BackgroundTimerPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -30,6 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
           new RNFetchBlobPackage(),
           new OrientationPackage(),
+          new BackgroundTimerPackage(),
           new ReactNativeAudioStreamingPackage()
       );
     }

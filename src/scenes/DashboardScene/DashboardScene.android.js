@@ -6,8 +6,7 @@ import {
   View,
   StyleSheet,
   Image,
-  NetInfo,
-  AppState
+  AppState,
 } from 'react-native';
 
 import { connectAudios } from 'AppRedux';
@@ -19,6 +18,7 @@ import { get, isEqual, isEmpty } from 'lodash';
 import { AlertMessage, promisify } from 'AppUtilities';
 import Orientation from 'react-native-orientation';
 import { channels } from 'AppConfig';
+import BackgroundTimer from 'react-native-background-timer';
 
 const styles = StyleSheet.create({
   container: {
@@ -46,8 +46,11 @@ class DashboardScene extends PureComponent {
       selectedMusic: props.audios,
       isPortrait: true,
       screenWidth: WINDOW_WIDTH,
-      screenHeight: WINDOW_HEIGHT
+      screenHeight: WINDOW_HEIGHT,
+      pausedFromOffline: false
     };
+
+    this.backgroundTimer = null;
   }
 
   componentDidMount() {
@@ -58,7 +61,31 @@ class DashboardScene extends PureComponent {
     AppState.addEventListener('change', this.appStateChangeListener);
 
     this.checkProps(this.props);
+
+    // background timer
+    this.backgroundTimer = BackgroundTimer.setInterval(() => {
+      // this will be executed every 200 ms
+      // even when app is the the background
+      this.checkOnline();
+    }, 2000);
   }
+
+  checkOnline = () => {
+    // const { isPlaying, pausedFromOffline, selectedMusicSource } = this.state;
+    //
+    // NetInfo.isConnected.fetch().then(isConnected => {
+    //   if (!isConnected && isPlaying) {
+    //     this.setState({ isPlaying: false, pausedFromOffline: true });
+    //     ReactNativeAudioStreaming.stop();
+    //   } else if (isConnected && pausedFromOffline) {
+    //     this.setState({ isPlaying: true, pausedFromOffline: false });
+    //     if (!isEmpty(selectedMusicSource)) {
+    //       ReactNativeAudioStreaming.play(selectedMusicSource,
+    //         { showIniOSMediaCenter: true, showInAndroidNotifications: true });
+    //     }
+    //   }
+    // });
+  };
 
   componentWillMount() {
     this.orientationChangeListener(Orientation.getInitialOrientation());
@@ -72,16 +99,25 @@ class DashboardScene extends PureComponent {
       'change',
       this.appStateChangeListener
     );
+
+    // Cancel the timer when you are done with it
+    if (this.backgroundTimer) {
+      BackgroundTimer.clearInterval(this.backgroundTimer);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!isEqual(this.props.audios, nextProps.audios)) {
+    const oldUrl = get(this.props.audios, 'tuneinurl');
+    const newUrl = get(nextProps.audios, 'tuneinurl');
+
+    if (!isEqual(oldUrl, newUrl)) {
       this.setState({ selectedMusic: nextProps.audios });
       this.checkProps(nextProps);
     }
   }
 
   appStateChangeListener = (state) => {
+    console.log('state = ', state);
     if (state === 'background' || state === 'inactive') {
       return;
     }
@@ -90,16 +126,16 @@ class DashboardScene extends PureComponent {
       return;
     }
 
-    // if app goes into active state
-    // check if music was playing
-    // if true, continue playing, false nothing to do
-    NetInfo.isConnected.fetch().then(isConnected => {
-      if (isConnected) {
-        if (this.state.isPlaying) {
-          ReactNativeAudioStreaming.resume();
-        }
-      }
-    });
+    // ReactNativeAudioStreaming.getStatus((error, result) => {
+    //   console.log('error = ', error);
+    //   if (!error) {
+    //     console.log('result = ', result);
+    //     if (result.status === 'ERROR' || result.status === 'PAUSED') {
+    //       ReactNativeAudioStreaming.play(this.state.selectedMusicSource,
+    //         { showIniOSMediaCenter: true, showInAndroidNotifications: true });
+    //     }
+    //   }
+    // });
   };
 
   orientationChangeListener = (orientation) => {
@@ -125,12 +161,15 @@ class DashboardScene extends PureComponent {
   };
 
   onPlayButtonClicked = () => {
-    const { isPlaying } = this.state;
+    const { isPlaying, selectedMusicSource } = this.state;
 
     if (isPlaying) {
       ReactNativeAudioStreaming.pause();
     } else {
-      ReactNativeAudioStreaming.resume();
+      if (!isEmpty(selectedMusicSource)) {
+        ReactNativeAudioStreaming.play(selectedMusicSource,
+          { showIniOSMediaCenter: true, showInAndroidNotifications: true });
+      }
     }
 
     this.setState({ isPlaying: !isPlaying });
