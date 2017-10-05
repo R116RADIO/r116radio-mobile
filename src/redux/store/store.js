@@ -12,8 +12,6 @@ import rootReducer from './reducers';
 import sagas from './sagas';
 import { createLogger } from 'redux-logger';
 
-import { userActionCreators } from '../modules/audios/actions';
-
 const api = 'api.v2';
 
 // change context types in ReduxWrapper.js

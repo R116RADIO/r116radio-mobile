@@ -28,7 +28,7 @@ export function* asyncFetchAudios({ payload, resolve, reject }) {
 
     if (response.data && isArray(response.data)) {
       yield put(audioActionCreators.fetchAudiosSuccess(response.data[0]));
-      resolve();
+      resolve(response.data[0]);
     } else {
       reject();
     }

@@ -7,7 +7,6 @@ import {
   StyleSheet,
   Image,
   NetInfo,
-  Dimensions,
   AppState
 } from 'react-native';
 
@@ -19,6 +18,7 @@ import { ReactNativeAudioStreaming } from 'react-native-audio-streaming';
 import { get, isEqual, isEmpty } from 'lodash';
 import { AlertMessage, promisify } from 'AppUtilities';
 import Orientation from 'react-native-orientation';
+import { channels } from 'AppConfig';
 
 const styles = StyleSheet.create({
   container: {
@@ -41,6 +41,7 @@ class DashboardScene extends PureComponent {
 
     this.state = {
       isPlaying: false,
+      selectedChannel: channels[0].url,
       selectedMusicSource: '',
       selectedMusic: props.audios,
       isPortrait: true,
@@ -67,11 +68,6 @@ class DashboardScene extends PureComponent {
     // stop audio when app is closed
     ReactNativeAudioStreaming.stop();
 
-    // remove listeners
-    NetInfo.isConnected.removeEventListener(
-      'change',
-      this.connectionStatusChangeListener
-    );
     AppState.removeEventListener(
       'change',
       this.appStateChangeListener
@@ -117,8 +113,12 @@ class DashboardScene extends PureComponent {
   onStreamLineChanged = (streamUrl) => {
     const { fetchAudios } = this.props;
 
+    // stop previous playing music
     this.setState({ isPlaying: false });
     ReactNativeAudioStreaming.stop();
+
+    // fetch new music
+    this.setState({ selectedChannel: streamUrl });
 
     promisify(fetchAudios, { url: streamUrl })
       .catch((e) => AlertMessage.showMessage(e));
@@ -156,10 +156,17 @@ class DashboardScene extends PureComponent {
   };
 
   render() {
-    const { isPlaying, selectedMusic, isPortrait, screenWidth, screenHeight } = this.state;
+    const { fetchAudios } = this.props;
+    const {
+      isPlaying,
+      selectedMusic,
+      isPortrait,
+      screenWidth,
+      screenHeight,
+      selectedChannel
+    } = this.state;
 
-    const { width, height } = Dimensions.get('window');
-    const rWidth = isPortrait ? width : height;
+    const rWidth = isPortrait ? screenWidth : screenHeight;
 
     return (
       <View style={styles.container} onLayout={this.onChangeMainLayout}>
@@ -174,6 +181,8 @@ class DashboardScene extends PureComponent {
           isPortrait={isPortrait}
           screenWidth={screenWidth}
           screenHeight={screenHeight}
+          channel={selectedChannel}
+          fetchAudios={fetchAudios}
         />
         <PlaylistTabView
           onStreamLineChanged={this.onStreamLineChanged}

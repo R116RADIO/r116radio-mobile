@@ -10,7 +10,7 @@ import {
   Platform,
 } from 'react-native';
 
-import { CachedImage as RNImage } from 'AppUtilities';
+import { CachedImage as RNImage, promisify } from 'AppUtilities';
 import { HKGroteskBold, HKGroteskRegular } from 'AppFonts';
 import { WINDOW_WIDTH } from 'AppConstants';
 import { GRAY, WHITE } from 'AppColors';
@@ -77,15 +77,79 @@ const styles = StyleSheet.create({
 
 class PlayerForm extends PureComponent {
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      song: props.dataSource
+    };
+
+    this.fetchListener = null;
+
+    // start syncing artist info
+    this.startFetching(props.channel);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.channel !== this.props.channel) {
+      this.startFetching(nextProps.channel);
+    }
+
+    if (nextProps.dataSource !== this.props.dataSource) {
+      this.setState({ song: nextProps.dataSource });
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.fetchListener) {
+      clearTimeout(this.fetchListener);
+      this.fetchListener = null;
+    }
+  }
+
+  /**
+   * Function to start syncing for new channel
+   * @param channel
+   */
+  startFetching = (channel) => {
+    if (isEmpty(channel)) {
+      return;
+    }
+
+    if (this.fetchListener) {
+      clearInterval(this.fetchListener);
+      this.fetchListener = null;
+    }
+
+    this.fetchListener = setInterval(() => {
+      this.fetchChannelInfo(channel);
+    }, 15000);
+  };
+
+  /**
+   * Function to sync artist info
+   * @param channel
+   */
+  fetchChannelInfo = (channel) => {
+    const { fetchAudios } = this.props;
+
+    promisify(fetchAudios, { url: channel })
+      .then((data) => {
+        console.log('data = ', data);
+        this.setState({ song: data });
+      });
+  };
+
   render() {
     const {
-      dataSource: song,
       isPlaying,
       onPlayButtonClicked,
       isPortrait,
       screenWidth,
       screenHeight
     } = this.props;
+
+    const { song } = this.state;
 
     const rWidth = isPortrait ? screenWidth : screenHeight;
 
@@ -154,7 +218,9 @@ PlayerForm.propTypes = {
   onPlayButtonClicked: PropTypes.func.isRequired,
   isPortrait: PropTypes.bool,
   screenWidth: PropTypes.number.isRequired,
-  screenHeight: PropTypes.number.isRequired
+  screenHeight: PropTypes.number.isRequired,
+  channel: PropTypes.string.isRequired,
+  fetchAudios: PropTypes.func.isRequired,
 };
 
 PlayerForm.defaultProps = {
