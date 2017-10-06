@@ -17,11 +17,13 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -37,6 +39,10 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>R116Radio requires bluetooth access.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>R116Radio requires access to your calendar.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>R116Radio requires access to location services.</string>
 	<key>NSMicrophoneUsageDescription</key>
