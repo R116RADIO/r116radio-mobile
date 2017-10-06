@@ -54,7 +54,7 @@ class DashboardScene extends PureComponent {
     Orientation.addOrientationListener(this.orientationChangeListener);
 
     // listen app state
-    AppState.addEventListener('change', this.appStateChangeListener);
+    // AppState.addEventListener('change', this.appStateChangeListener);
 
     this.checkProps(this.props);
   }
@@ -67,10 +67,10 @@ class DashboardScene extends PureComponent {
     // stop audio when app is closed
     ReactNativeAudioStreaming.stop();
 
-    AppState.removeEventListener(
-      'change',
-      this.appStateChangeListener
-    );
+    // AppState.removeEventListener(
+    //   'change',
+    //   this.appStateChangeListener
+    // );
   }
 
   componentWillReceiveProps(nextProps) {
@@ -83,25 +83,25 @@ class DashboardScene extends PureComponent {
     }
   }
 
-  appStateChangeListener = (state) => {
-    console.log('state = ', state);
-    if (state === 'background' || state === 'inactive') {
-      return;
-    }
-
-    if (state !== 'active') {
-      return;
-    }
-
-    // ReactNativeAudioStreaming.getStatus((error, result) => {
-    //   if (!error) {
-    //     if (result.status === 'ERROR' || result.status === 'PAUSED') {
-    //       ReactNativeAudioStreaming.play(this.state.selectedMusicSource,
-    //         { showIniOSMediaCenter: true, showInAndroidNotifications: true });
-    //     }
-    //   }
-    // });
-  };
+  // appStateChangeListener = (state) => {
+  //   console.log('state = ', state);
+  //   if (state === 'background' || state === 'inactive') {
+  //     return;
+  //   }
+  //
+  //   if (state !== 'active') {
+  //     return;
+  //   }
+  //
+  //   // ReactNativeAudioStreaming.getStatus((error, result) => {
+  //   //   if (!error) {
+  //   //     if (result.status === 'ERROR' || result.status === 'PAUSED') {
+  //   //       ReactNativeAudioStreaming.play(this.state.selectedMusicSource,
+  //   //         { showIniOSMediaCenter: true, showInAndroidNotifications: true });
+  //   //     }
+  //   //   }
+  //   // });
+  // };
 
   orientationChangeListener = (orientation) => {
     if (orientation === 'PORTRAIT') {

@@ -58,16 +58,16 @@ class DashboardScene extends PureComponent {
     Orientation.addOrientationListener(this.orientationChangeListener);
 
     // listen app state
-    AppState.addEventListener('change', this.appStateChangeListener);
+    // AppState.addEventListener('change', this.appStateChangeListener);
 
     this.checkProps(this.props);
 
     // background timer
-    this.backgroundTimer = BackgroundTimer.setInterval(() => {
-      // this will be executed every 200 ms
-      // even when app is the the background
-      this.checkOnline();
-    }, 2000);
+    // this.backgroundTimer = BackgroundTimer.setInterval(() => {
+    //   // this will be executed every 200 ms
+    //   // even when app is the the background
+    //   this.checkOnline();
+    // }, 2000);
   }
 
   checkOnline = () => {
@@ -95,15 +95,15 @@ class DashboardScene extends PureComponent {
     // stop audio when app is closed
     ReactNativeAudioStreaming.stop();
 
-    AppState.removeEventListener(
-      'change',
-      this.appStateChangeListener
-    );
+    // AppState.removeEventListener(
+    //   'change',
+    //   this.appStateChangeListener
+    // );
 
     // Cancel the timer when you are done with it
-    if (this.backgroundTimer) {
-      BackgroundTimer.clearInterval(this.backgroundTimer);
-    }
+    // if (this.backgroundTimer) {
+    //   BackgroundTimer.clearInterval(this.backgroundTimer);
+    // }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -116,27 +116,27 @@ class DashboardScene extends PureComponent {
     }
   }
 
-  appStateChangeListener = (state) => {
-    console.log('state = ', state);
-    if (state === 'background' || state === 'inactive') {
-      return;
-    }
-
-    if (state !== 'active') {
-      return;
-    }
-
-    // ReactNativeAudioStreaming.getStatus((error, result) => {
-    //   console.log('error = ', error);
-    //   if (!error) {
-    //     console.log('result = ', result);
-    //     if (result.status === 'ERROR' || result.status === 'PAUSED') {
-    //       ReactNativeAudioStreaming.play(this.state.selectedMusicSource,
-    //         { showIniOSMediaCenter: true, showInAndroidNotifications: true });
-    //     }
-    //   }
-    // });
-  };
+  // appStateChangeListener = (state) => {
+  //   console.log('state = ', state);
+  //   if (state === 'background' || state === 'inactive') {
+  //     return;
+  //   }
+  //
+  //   if (state !== 'active') {
+  //     return;
+  //   }
+  //
+  //   // ReactNativeAudioStreaming.getStatus((error, result) => {
+  //   //   console.log('error = ', error);
+  //   //   if (!error) {
+  //   //     console.log('result = ', result);
+  //   //     if (result.status === 'ERROR' || result.status === 'PAUSED') {
+  //   //       ReactNativeAudioStreaming.play(this.state.selectedMusicSource,
+  //   //         { showIniOSMediaCenter: true, showInAndroidNotifications: true });
+  //   //     }
+  //   //   }
+  //   // });
+  // };
 
   orientationChangeListener = (orientation) => {
     if (orientation === 'PORTRAIT') {
