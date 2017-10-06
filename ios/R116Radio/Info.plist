@@ -45,6 +45,10 @@
 	<string>R116Radio requires access to your calendar.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>R116Radio requires access to location services.</string>
+	<key>NSMainNibFile</key>
+	<string>LaunchScreen</string>
+	<key>NSMainNibFile~ipad</key>
+	<string>LaunchScreen</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>R116Radio requires access to microphone services.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>

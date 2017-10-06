@@ -14,6 +14,7 @@ import { HKGroteskSemiBold, HKGroteskRegular } from 'AppFonts';
 import { WINDOW_WIDTH } from 'AppConstants';
 import { WHITE, DARK_RED, DARKER_RED } from 'AppColors';
 import { channels } from 'AppConfig';
+import DeviceInfo from 'react-native-device-info';
 
 const TAB_ITEM_WIDTH = WINDOW_WIDTH / channels.length;
 
@@ -111,9 +112,18 @@ class PlaylistTabView extends PureComponent {
     const { currentChannel, sliderPosition } = this.state;
     const { screenWidth } = this.props;
 
+    const isTablet = DeviceInfo.isTablet();
+
+    const titleFontSize = isTablet ? 40 : 18;
+    const tabItemTitleFontSize = isTablet
+      ? 40
+      : Platform.OS === 'ios'
+        ? 18
+        : 14;
+
     return (
       <View style={[styles.container, { width: screenWidth }]}>
-        <HKGroteskRegular style={styles.title}>
+        <HKGroteskRegular style={[styles.title, { fontSize: titleFontSize }]}>
           Choose your genre:
         </HKGroteskRegular>
         <View style={[styles.contentView, { width: screenWidth }]}>
@@ -125,10 +135,13 @@ class PlaylistTabView extends PureComponent {
                 onPress={() => this.changeStreamLine(channel.url, index)}
                 style={[styles.tabItem,
                   { width: screenWidth / channels.length,
+                    height: screenWidth * 0.13,
                     backgroundColor: currentChannel === channel.url ? DARKER_RED : DARK_RED }]
                 }
               >
-                <HKGroteskSemiBold style={styles.tabItemTitle}>
+                <HKGroteskSemiBold
+                  style={[styles.tabItemTitle, { fontSize: tabItemTitleFontSize }]}
+                >
                   {channel.title}
                 </HKGroteskSemiBold>
               </TouchableOpacity>

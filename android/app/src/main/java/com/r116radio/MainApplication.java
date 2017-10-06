@@ -16,6 +16,7 @@ import com.audioStreaming.ReactNativeAudioStreamingPackage;
 import com.audioStreaming.ReactNativeAudioStreamingPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.ocetnik.timer.BackgroundTimerPackage;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -31,6 +32,7 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
           new RNFetchBlobPackage(),
           new OrientationPackage(),
+          new RNDeviceInfo(),
           new BackgroundTimerPackage(),
           new ReactNativeAudioStreamingPackage()
       );

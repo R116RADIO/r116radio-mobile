@@ -16,6 +16,7 @@ import { WINDOW_WIDTH } from 'AppConstants';
 import { GRAY, WHITE } from 'AppColors';
 import * as Progress from 'react-native-progress';
 import { get, isEmpty } from 'lodash';
+import DeviceInfo from 'react-native-device-info';
 
 const styles = StyleSheet.create({
   container: {
@@ -44,8 +45,7 @@ const styles = StyleSheet.create({
   },
   detailContainer: {
     justifyContent: 'space-between',
-    marginLeft: 15,
-    height: WINDOW_WIDTH * 0.17 - 5
+    marginLeft: 15
   },
   title: {
     ...Platform.select({
@@ -163,6 +163,24 @@ class PlayerForm extends PureComponent {
       ? require('img/buttons/btn_stop.png')
       : require('img/buttons/btn_play.png');
 
+    const isTablet = DeviceInfo.isTablet();
+
+    const titleFontSize = isTablet
+      ? 40
+      : Platform.OS === 'ios'
+        ? 18
+        : 15;
+
+    const artistFontSize = isTablet
+      ? 36
+      : Platform.OS === 'ios'
+        ? 16
+        : 13;
+
+    const playlistFontSize = isTablet
+      ? 34
+      : 13;
+
     return (
       <View style={[styles.container, { flexDirection: isPortrait ? 'column' : 'row' }]}>
         <View style={[styles.thumbView, { width: rWidth * 0.33 + 3, height: rWidth * 0.33 + 3 }]}>
@@ -181,7 +199,7 @@ class PlayerForm extends PureComponent {
           />
         </View>
         <View style={[styles.infoContainer,
-          { marginTop: isPortrait ? 30 : 0, marginLeft: isPortrait ? 0 : 30 }
+          { marginTop: isPortrait ? rWidth * 0.05 : 0, marginLeft: isPortrait ? 0 : 30 }
           ]}
         >
           <TouchableOpacity
@@ -189,18 +207,30 @@ class PlayerForm extends PureComponent {
             onPress={onPlayButtonClicked}
           >
             <Image
-              style={styles.playButton}
+              style={[styles.playButton, { width: rWidth * 0.18, height: rWidth * 0.18 }]}
               source={playButtonImage}
             />
           </TouchableOpacity>
-          <View style={[styles.detailContainer, { height: rWidth * 0.17 - 5 }]}>
-            <HKGroteskBold numberOfLines={1} style={styles.title}>
+          <View
+            style={[styles.detailContainer,
+              { height: rWidth * 0.18 - rWidth * 0.01, marginLeft: rWidth * 0.02 }]}
+          >
+            <HKGroteskBold
+              numberOfLines={1}
+              style={[styles.title, { fontSize: titleFontSize }]}
+            >
               {isEmpty(title) ? 'Unknown' : title}
             </HKGroteskBold>
-            <HKGroteskRegular numberOfLines={1} style={styles.artist}>
+            <HKGroteskRegular
+              numberOfLines={1}
+              style={[styles.artist, { fontSize: artistFontSize }]}
+            >
               {isEmpty(artist) ? 'Unknown' : artist}
             </HKGroteskRegular>
-            <HKGroteskRegular numberOfLines={1} style={styles.playlistTitle}>
+            <HKGroteskRegular
+              numberOfLines={1}
+              style={[styles.playlistTitle, { fontSize: playlistFontSize }]}
+            >
               {isEmpty(playlistTitle) ? 'Unknown' : playlistTitle}
             </HKGroteskRegular>
           </View>
