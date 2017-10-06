@@ -166,20 +166,16 @@ class PlayerForm extends PureComponent {
     const isTablet = DeviceInfo.isTablet();
 
     const titleFontSize = isTablet
-      ? 40
-      : Platform.OS === 'ios'
-        ? 18
-        : 15;
+      ? Platform.OS === 'ios' ? 40 : 30
+      : Platform.OS === 'ios' ? 18 : 15;
 
     const artistFontSize = isTablet
-      ? 36
-      : Platform.OS === 'ios'
-        ? 16
-        : 13;
+      ? Platform.OS === 'ios' ? 36 : 24
+      : Platform.OS === 'ios' ? 16 : 13;
 
     const playlistFontSize = isTablet
-      ? 34
-      : 13;
+      ? Platform.OS === 'ios' ? 34 : 24
+      : Platform.OS === 'ios' ? 13 : 12;
 
     return (
       <View style={[styles.container, { flexDirection: isPortrait ? 'column' : 'row' }]}>

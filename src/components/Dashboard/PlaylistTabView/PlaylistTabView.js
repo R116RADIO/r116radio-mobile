@@ -116,10 +116,8 @@ class PlaylistTabView extends PureComponent {
 
     const titleFontSize = isTablet ? 40 : 18;
     const tabItemTitleFontSize = isTablet
-      ? 40
-      : Platform.OS === 'ios'
-        ? 18
-        : 14;
+      ? Platform.OS === 'ios' ? 40 : 30
+      : Platform.OS === 'ios' ? 18 : 14;
 
     return (
       <View style={[styles.container, { width: screenWidth }]}>
