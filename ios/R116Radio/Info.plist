@@ -17,15 +17,19 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>3</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
 			<key>localhost</key>
@@ -35,14 +39,46 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>R116Radio requires bluetooth access.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>R116Radio requires access to your calendar.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>R116Radio requires access to location services.</string>
+	<key>NSMainNibFile</key>
+	<string>LaunchScreen</string>
+	<key>NSMainNibFile~ipad</key>
+	<string>LaunchScreen</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>R116Radio requires access to microphone services.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>R116Radio requires access to speech recognition services.</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>HKGrotesk-Bold.otf</string>
+		<string>HKGrotesk-BoldItalic.otf</string>
+		<string>HKGrotesk-Italic.otf</string>
+		<string>HKGrotesk-Light.otf</string>
+		<string>HKGrotesk-LightItalic.otf</string>
+		<string>HKGrotesk-Medium.otf</string>
+		<string>HKGrotesk-MediumItalic.otf</string>
+		<string>HKGrotesk-Regular.otf</string>
+		<string>HKGrotesk-SemiBold.otf</string>
+		<string>HKGrotesk-SemiBoldItalic.otf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+		<string>fetch</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIRequiresFullScreen</key>
+	<true/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -50,6 +86,6 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
+	<true/>
 </dict>
 </plist>

@@ -1,0 +1,165 @@
+fastlane_version "2.53.1"
+
+default_platform :ios
+
+platform :ios do
+
+  before_all do ######## BEFORE ALL #####################
+    PLATFORM_NAME ="iOS"
+    $xc_project_path = './ios/R116Radio.xcodeproj'
+    disable_automatic_code_signing(path:$xc_project_path)
+
+    $username = 'r116radio@gmail.com'
+    $bundle_name = 'com.r116.radio'
+    $signer = 'iPhone Distribution: Robert Jakech (U37JYWRQ74)'
+
+    $devices = {
+        davidIphone:'d83924342509e618dcfe8ce700c6615726477aa7'
+    }
+  end ##################### end ######################
+
+  ############# INSTALL ON LOCAL DEVICE (DEBUG) ######################
+  desc "Install on local device in debug mode"
+  lane :debug_device do |values|
+    LANE_NAME = "debug_device"
+    sh "bash ./devicebuild.sh"
+
+    gym(
+      scheme: 'R116Radio',
+      configuration: 'Debug',
+      suppress_xcode_output: true,
+      export_method: 'development',
+      silent: true,
+      clean: true,
+      codesigning_identity: 'iPhone Developer: Robert Jakech (GJJFC4KBKT)',
+      project:$xc_project_path
+    )
+
+  install_on_device( skip_wifi: true)
+  end ##################### end ######################
+
+  ############# INSTALL ON LOCAL DEVICE ######################
+  desc "Build and install on the first-located USB connected iOS device"
+  lane :device do |values|
+    LANE_NAME = "local_device"
+    sh "bash ./devicebuild.sh"
+    gym(
+      scheme: 'R116Radio',
+      configuration: 'Release',
+      suppress_xcode_output: true,
+      export_method: 'ad-hoc',
+      silent: true,
+      codesigning_identity: $signer,
+      project:$xc_project_path
+    )
+
+    install_on_device(
+      skip_wifi: true
+    )
+  end ##################### end ######################
+
+  ############ TEST FLIGHT ###################
+  desc "Submit a new Beta Build to Apple TestFlight"
+  desc "This will also make sure the profile is up to date"
+  lane :beta do |values|
+    LANE_NAME = 'beta'
+
+    branch = git_branch
+
+    if values[:bump]
+        increment_version_number_in_plist(xcodeproj:$xc_project_path, bump_type:values[:bump], target:'R116Radio',)
+    end
+
+    increment_build_number_in_plist(xcodeproj:$xc_project_path, target:'R116Radio')
+    build_num = get_build_number_from_plist(xcodeproj:$xc_project_path, target:'R116Radio')
+    version = get_version_number_from_plist(xcodeproj:$xc_project_path, target:'R116Radio')
+    # commit_version_bump(xcodeproj:$xc_project_path, message:"Version: #{version}, Build: #{build_num}")
+
+    tag = "builds/#{PLATFORM_NAME}/#{LANE_NAME}/#{version}(#{build_num})"
+    if !git_tag_exists(tag:tag)
+      add_git_tag(tag:tag)
+      push_to_git_remote(local_branch:branch, remote_branch:branch, remote:'origin', force:true)
+    end
+
+    gym(
+      scheme: 'R116Radio',
+      configuration: 'Release',
+      suppress_xcode_output: true,
+      export_method: 'app-store',
+      silent: true,
+      clean: true,
+      include_bitcode: true,
+      include_symbols: true,
+      codesigning_identity: $signer,
+      project:$xc_project_path
+    )
+
+    notes = changelog_from_git_commits()[0,1600] + '...'
+
+    testflight(changelog: "Add rocket emoji")   # upload to testflight
+
+  end ################## end #####################
+
+  ########## EXPERIMENTAL ############################
+  desc "playground lane for testing out fastlane actions and build scripts"
+  lane :experimental do |values|
+    LANE_NAME = "experimental"
+
+      apk_path = values[:apk_path] ? values[:apk_path] : "../android/app/build/outputs/apk/app-debug.apk"
+      sh "adb -d install -r #{apk_path}"
+
+  end ##################### end ######################
+
+  after_all do |lane|
+   clean_build_artifacts
+  end
+
+end
+
+platform :android do |values|
+
+  ########## PREBUILT ############################
+  desc "install pre-built .apk package on first local device"
+  lane :prebuilt do |values|
+    LANE_NAME = "prebuilt"
+
+      apk_path = values[:apk_path] ? values[:apk_path] : "../android/app/build/outputs/apk/app-debug.apk"
+      sh "adb -d install -r #{apk_path}"
+
+
+  end ##################### end ######################
+
+
+  ############# INSTALL DEBUG BUILD ON LOCAL DEVICE ######################
+  desc "Clean, (debug) build, load APK onto first-located USB-connected device"
+  lane :debug_device do
+
+    gradle(
+      task: 'assemble',
+      build_type: 'debug',
+      project_dir: './android',
+      flags: '-q --daemon',
+    )
+    apk_path = "../android/app/build/outputs/apk/app-debug.apk"
+    sh "adb reverse tcp:8081 tcp:8081"
+    sh "adb -d install -r #{apk_path}"
+
+  end ##################### end ######################
+
+
+  ############# INSTALL RELEASE BUILD ON LOCAL DEVICE ######################
+  desc "Clean, build, load APK onto first-located USB-connected device"
+  lane :device do
+
+    gradle(
+      task: 'assemble',
+      build_type: 'release',
+      project_dir: './android',
+      flags: '-q --daemon',
+    )
+    apk_path = "../android/app/build/outputs/apk/app-release.apk"
+    sh "adb -d install -r #{apk_path}"
+
+  end ##################### end ######################
+end
+
