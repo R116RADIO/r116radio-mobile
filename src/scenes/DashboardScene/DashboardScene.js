@@ -6,7 +6,7 @@ import {
   View,
   StyleSheet,
   Image,
-  AppState
+  BackHandler
 } from 'react-native';
 
 import { connectAudios } from 'AppRedux';
@@ -14,7 +14,7 @@ import { BLACK } from 'AppColors';
 import { WINDOW_WIDTH, WINDOW_HEIGHT } from 'AppConstants';
 import { PlayerForm, PlaylistTabView } from 'AppComponents';
 import { ReactNativeAudioStreaming } from 'react-native-audio-streaming';
-import { get, isEqual, isEmpty } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import { AlertMessage, promisify } from 'AppUtilities';
 import Orientation from 'react-native-orientation';
 import { channels } from 'AppConfig';
@@ -52,56 +52,18 @@ class DashboardScene extends PureComponent {
   componentDidMount() {
     // listen orientation change
     Orientation.addOrientationListener(this.orientationChangeListener);
-
-    // listen app state
-    // AppState.addEventListener('change', this.appStateChangeListener);
-
-    this.checkProps(this.props);
+    BackHandler.addEventListener('hardwareBackPress', this.backButtonListener);
   }
 
   componentWillMount() {
     this.orientationChangeListener(Orientation.getInitialOrientation());
+    BackHandler.removeEventListener('hardwareBackPress', this.backButtonListener);
   }
 
   componentWillUnmount() {
     // stop audio when app is closed
     ReactNativeAudioStreaming.stop();
-
-    // AppState.removeEventListener(
-    //   'change',
-    //   this.appStateChangeListener
-    // );
   }
-
-  componentWillReceiveProps(nextProps) {
-    const oldUrl = get(this.props.audios, 'tuneinurl');
-    const newUrl = get(nextProps.audios, 'tuneinurl');
-
-    if (!isEqual(oldUrl, newUrl)) {
-      this.setState({ selectedMusic: nextProps.audios });
-      this.checkProps(nextProps);
-    }
-  }
-
-  // appStateChangeListener = (state) => {
-  //   console.log('state = ', state);
-  //   if (state === 'background' || state === 'inactive') {
-  //     return;
-  //   }
-  //
-  //   if (state !== 'active') {
-  //     return;
-  //   }
-  //
-  //   // ReactNativeAudioStreaming.getStatus((error, result) => {
-  //   //   if (!error) {
-  //   //     if (result.status === 'ERROR' || result.status === 'PAUSED') {
-  //   //       ReactNativeAudioStreaming.play(this.state.selectedMusicSource,
-  //   //         { showIniOSMediaCenter: true, showInAndroidNotifications: true });
-  //   //     }
-  //   //   }
-  //   // });
-  // };
 
   orientationChangeListener = (orientation) => {
     if (orientation === 'PORTRAIT') {
@@ -111,44 +73,42 @@ class DashboardScene extends PureComponent {
     }
   };
 
-  onStreamLineChanged = (streamUrl) => {
-    const { fetchAudios } = this.props;
+  backButtonListener = () => {
+    BackHandler.exitApp();
+  };
 
+  onStreamLineChanged = (streamUrl) => {
     // stop previous playing music
     this.setState({ isPlaying: false });
     ReactNativeAudioStreaming.stop();
 
     // fetch new music
     this.setState({ selectedChannel: streamUrl });
-
-    promisify(fetchAudios, { url: streamUrl })
-      .catch((e) => AlertMessage.showMessage(e));
   };
 
   onPlayButtonClicked = () => {
-    const { isPlaying, selectedMusicSource } = this.state;
+    const { isPlaying, selectedChannel } = this.state;
+    const { fetchAudios } = this.props;
 
     if (isPlaying) {
+      this.setState({ isPlaying: false });
       ReactNativeAudioStreaming.pause();
     } else {
-      if (!isEmpty(selectedMusicSource)) {
-        ReactNativeAudioStreaming.play(selectedMusicSource,
-          { showIniOSMediaCenter: true, showInAndroidNotifications: true });
-      }
-    }
+      promisify(fetchAudios, { url: selectedChannel })
+        .then((data) => {
+          const selectedMusicSource = get(data, 'tuneinurl');
 
-    this.setState({ isPlaying: !isPlaying });
-  };
-
-  checkProps = (props) => {
-    const { audios } = props;
-    const selectedMusicSource = get(audios, 'tuneinurl');
-
-    if (!isEmpty(selectedMusicSource)) {
-      this.setState({ isPlaying: true, selectedMusicSource: `${selectedMusicSource}.mp3` }, () => {
-        ReactNativeAudioStreaming.play(this.state.selectedMusicSource,
-          { showIniOSMediaCenter: true, showInAndroidNotifications: true });
-      });
+          if (!isEmpty(selectedMusicSource)) {
+            this.setState({
+              isPlaying: true,
+              selectedMusicSource: `${selectedMusicSource}.mp3`
+            }, () => {
+              ReactNativeAudioStreaming.play(this.state.selectedMusicSource,
+                { showIniOSMediaCenter: true, showInAndroidNotifications: true });
+            });
+          }
+        })
+        .catch(() => AlertMessage.showMessage(null, 'Cannot connect to server.'));
     }
   };
 

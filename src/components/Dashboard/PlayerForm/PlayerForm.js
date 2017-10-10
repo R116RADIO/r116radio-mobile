@@ -244,11 +244,13 @@ PlayerForm.propTypes = {
   screenHeight: PropTypes.number.isRequired,
   channel: PropTypes.string.isRequired,
   fetchAudios: PropTypes.func.isRequired,
+  isPlaying: PropTypes.bool
 };
 
 PlayerForm.defaultProps = {
   dataSource: {},
-  isPortrait: true
+  isPortrait: true,
+  isPlaying: false
 };
 
 export default PlayerForm;
