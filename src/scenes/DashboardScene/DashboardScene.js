@@ -111,7 +111,8 @@ class DashboardScene extends PureComponent {
         if (!isEmpty(selectedMusicSource)) {
           this.setState({
             isPlaying: true,
-            selectedMusicSource: `${selectedMusicSource}.mp3`
+            selectedMusicSource: `${selectedMusicSource}.mp3`,
+            selectedMusic: data
           }, () => {
             ReactNativeAudioStreaming.play(this.state.selectedMusicSource,
               { showIniOSMediaCenter: true, showInAndroidNotifications: true });
