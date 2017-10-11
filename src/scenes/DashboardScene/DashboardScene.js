@@ -45,7 +45,8 @@ class DashboardScene extends PureComponent {
       selectedMusic: props.audios,
       isPortrait: true,
       screenWidth: WINDOW_WIDTH,
-      screenHeight: WINDOW_HEIGHT
+      screenHeight: WINDOW_HEIGHT,
+      isFetching: false
     };
   }
 
@@ -83,33 +84,42 @@ class DashboardScene extends PureComponent {
     ReactNativeAudioStreaming.stop();
 
     // fetch new music
-    this.setState({ selectedChannel: streamUrl });
+    this.setState({ selectedChannel: streamUrl }, () => this.playMusic());
   };
 
   onPlayButtonClicked = () => {
-    const { isPlaying, selectedChannel } = this.state;
-    const { fetchAudios } = this.props;
+    const { isPlaying } = this.state;
 
     if (isPlaying) {
       this.setState({ isPlaying: false });
       ReactNativeAudioStreaming.pause();
     } else {
-      promisify(fetchAudios, { url: selectedChannel })
-        .then((data) => {
-          const selectedMusicSource = get(data, 'tuneinurl');
-
-          if (!isEmpty(selectedMusicSource)) {
-            this.setState({
-              isPlaying: true,
-              selectedMusicSource: `${selectedMusicSource}.mp3`
-            }, () => {
-              ReactNativeAudioStreaming.play(this.state.selectedMusicSource,
-                { showIniOSMediaCenter: true, showInAndroidNotifications: true });
-            });
-          }
-        })
-        .catch(() => AlertMessage.showMessage(null, 'Cannot connect to server.'));
+      this.playMusic();
     }
+  };
+
+  playMusic = () => {
+    const { selectedChannel } = this.state;
+    const { fetchAudios } = this.props;
+
+    this.setState({ isFetching: true });
+
+    promisify(fetchAudios, { url: selectedChannel })
+      .then((data) => {
+        const selectedMusicSource = get(data, 'tuneinurl');
+
+        if (!isEmpty(selectedMusicSource)) {
+          this.setState({
+            isPlaying: true,
+            selectedMusicSource: `${selectedMusicSource}.mp3`
+          }, () => {
+            ReactNativeAudioStreaming.play(this.state.selectedMusicSource,
+              { showIniOSMediaCenter: true, showInAndroidNotifications: true });
+          });
+        }
+      })
+      .catch(() => AlertMessage.showMessage(null, 'Cannot connect to server.'))
+      .finally(() => this.setState({ isFetching: false }));
   };
 
   onChangeMainLayout = (event) => {
@@ -127,7 +137,8 @@ class DashboardScene extends PureComponent {
       isPortrait,
       screenWidth,
       screenHeight,
-      selectedChannel
+      selectedChannel,
+      isFetching
     } = this.state;
 
     const rWidth = isPortrait ? screenWidth : screenHeight;
@@ -150,6 +161,7 @@ class DashboardScene extends PureComponent {
           screenHeight={screenHeight}
           channel={selectedChannel}
           fetchAudios={fetchAudios}
+          isFetching={isFetching}
         />
         <PlaylistTabView
           onStreamLineChanged={this.onStreamLineChanged}
