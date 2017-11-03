@@ -13,6 +13,7 @@ import {
 import { CachedImage as RNImage, promisify } from 'AppUtilities';
 import { HKGroteskBold, HKGroteskRegular } from 'AppFonts';
 import { WINDOW_WIDTH } from 'AppConstants';
+import { Loading } from 'AppComponents';
 import { GRAY, WHITE } from 'AppColors';
 import * as Progress from 'react-native-progress';
 import { get, isEmpty } from 'lodash';
@@ -72,6 +73,13 @@ const styles = StyleSheet.create({
   playlistTitle: {
     fontSize: 14,
     color: GRAY
+  },
+  loader: {
+    position: 'absolute'
+  },
+  buttonContainer: {
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
 
@@ -143,7 +151,8 @@ class PlayerForm extends PureComponent {
       onPlayButtonClicked,
       isPortrait,
       screenWidth,
-      screenHeight
+      screenHeight,
+      isFetching
     } = this.props;
 
     const { song } = this.state;
@@ -199,13 +208,21 @@ class PlayerForm extends PureComponent {
           ]}
         >
           <TouchableOpacity
+            style={styles.buttonContainer}
             activeOpacity={0.8}
             onPress={onPlayButtonClicked}
+            disabled={isFetching}
           >
             <Image
               style={[styles.playButton, { width: rWidth * 0.18, height: rWidth * 0.18 }]}
               source={playButtonImage}
             />
+            {isFetching &&
+              <Loading
+                style={styles.loader}
+                size={'small'}
+              />
+            }
           </TouchableOpacity>
           <View
             style={[styles.detailContainer,
@@ -244,11 +261,15 @@ PlayerForm.propTypes = {
   screenHeight: PropTypes.number.isRequired,
   channel: PropTypes.string.isRequired,
   fetchAudios: PropTypes.func.isRequired,
+  isPlaying: PropTypes.bool,
+  isFetching: PropTypes.bool
 };
 
 PlayerForm.defaultProps = {
   dataSource: {},
-  isPortrait: true
+  isPortrait: true,
+  isPlaying: false,
+  isFetching: false
 };
 
 export default PlayerForm;

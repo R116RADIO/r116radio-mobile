@@ -10,11 +10,9 @@ import {
 } from 'react-native';
 import { Loading } from 'AppComponents';
 import { connectAudios } from 'AppRedux';
-import { promisify } from 'AppUtilities';
 import { Actions } from 'react-native-router-flux';
-import { channels } from 'AppConfig';
 import { CachedImage } from 'AppUtilities';
-import {WINDOW_WIDTH} from "../../constants/constants";
+import { WINDOW_WIDTH } from 'AppConstants';
 
 const styles = StyleSheet.create({
   progressView: {
@@ -38,11 +36,12 @@ const styles = StyleSheet.create({
 class SplashScene extends PureComponent {
 
   componentDidMount() {
-    const { fetchAudios } = this.props;
+    const timeoutInterval = Platform.OS === 'ios' ? 10 : 1500;
 
-    CachedImage.init()
-      .then(() => promisify(fetchAudios, { url: channels[0].url }))
-      .then(() => Actions.dashboard());
+    setTimeout(() => {
+      CachedImage.init()
+        .then(() => Actions.dashboard());
+    }, timeoutInterval);
   }
 
   renderIOSSplash = () => {
