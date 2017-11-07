@@ -25,12 +25,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   thumbView: {
-    width: WINDOW_WIDTH * 0.33 + 3,
-    height: WINDOW_WIDTH * 0.33 + 3,
+    width: WINDOW_WIDTH * 0.7 + 3,
+    height: WINDOW_WIDTH * 0.7 + 3,
   },
   thumb: {
-    width: WINDOW_WIDTH * 0.33,
-    height: WINDOW_WIDTH * 0.33,
+    width: WINDOW_WIDTH * 0.7,
+    height: WINDOW_WIDTH * 0.7,
     borderWidth: 1.5,
     borderColor: WHITE
   },
@@ -188,9 +188,9 @@ class PlayerForm extends PureComponent {
 
     return (
       <View style={[styles.container, { flexDirection: isPortrait ? 'column' : 'row' }]}>
-        <View style={[styles.thumbView, { width: rWidth * 0.33 + 3, height: rWidth * 0.33 + 3 }]}>
+        <View style={[styles.thumbView, { width: rWidth * (isPortrait ? 0.8 : 0.33) + 3, height: rWidth * (isPortrait ? 0.8 : 0.33) + 3 }]}>
           <RNImage
-            style={[styles.thumb, { width: rWidth * 0.33, height: rWidth * 0.33 }]}
+            style={[styles.thumb, { width: rWidth * (isPortrait ? 0.8 : 0.33), height: rWidth * (isPortrait ? 0.8 : 0.33) }]}
             resizeMode={'contain'}
             indicator={Progress.Circle}
             indicatorProps={{
@@ -226,11 +226,10 @@ class PlayerForm extends PureComponent {
           </TouchableOpacity>
           <View
             style={[styles.detailContainer,
-              { height: rWidth * 0.18 - rWidth * 0.01, marginLeft: rWidth * 0.02 }]}
+              { minHeight: rWidth * 0.18 - rWidth * 0.01, marginLeft: rWidth * 0.02 }]}
           >
             <HKGroteskBold
-              numberOfLines={1}
-              style={[styles.title, { fontSize: titleFontSize }]}
+              style={[styles.title, { fontSize: titleFontSize, maxWidth: rWidth * 0.6 }]}
             >
               {isEmpty(title) ? 'Unknown' : title}
             </HKGroteskBold>
