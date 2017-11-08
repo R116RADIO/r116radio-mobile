@@ -234,14 +234,12 @@ class PlayerForm extends PureComponent {
               {isEmpty(title) ? 'Unknown' : title}
             </HKGroteskBold>
             <HKGroteskRegular
-              numberOfLines={1}
-              style={[styles.artist, { fontSize: artistFontSize }]}
+              style={[styles.artist, { fontSize: artistFontSize, maxWidth: rWidth * 0.6 }]}
             >
               {isEmpty(artist) ? 'Unknown' : artist}
             </HKGroteskRegular>
             <HKGroteskRegular
-              numberOfLines={1}
-              style={[styles.playlistTitle, { fontSize: playlistFontSize }]}
+              style={[styles.playlistTitle, { fontSize: playlistFontSize, maxWidth: rWidth * 0.6 }]}
             >
               {isEmpty(playlistTitle) ? 'Unknown' : playlistTitle}
             </HKGroteskRegular>

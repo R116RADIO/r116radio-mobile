@@ -148,7 +148,7 @@ class DashboardScene extends PureComponent {
       <View style={styles.container} onLayout={this.onChangeMainLayout}>
         <Image
           style={[styles.logo,
-            { width: rWidth * 0.27, height: rWidth * 0.2, marginTop: isPortrait ? 50 : 10 }
+            { width: rWidth * 0.27, height: rWidth * 0.2, marginTop: isPortrait ? 30 : 10 }
             ]}
           resizeMode={'contain'}
           source={require('img/images/logo.png')}
