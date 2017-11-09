@@ -186,11 +186,14 @@ class PlayerForm extends PureComponent {
       ? Platform.OS === 'ios' ? 34 : 24
       : Platform.OS === 'ios' ? 13 : 12;
 
+    const thumbViewSize = isTablet ? rWidth * 0.4 + 3 : rWidth * (isPortrait ? 0.8 : 0.33) + 3;
+    const thumbSize = isTablet ? rWidth * 0.4 : rWidth * (isPortrait ? 0.8 : 0.33);
+
     return (
       <View style={[styles.container, { flexDirection: isPortrait ? 'column' : 'row' }]}>
-        <View style={[styles.thumbView, { width: rWidth * (isPortrait ? 0.8 : 0.33) + 3, height: rWidth * (isPortrait ? 0.8 : 0.33) + 3 }]}>
+        <View style={[styles.thumbView, { width: thumbViewSize, height: thumbViewSize }]}>
           <RNImage
-            style={[styles.thumb, { width: rWidth * (isPortrait ? 0.8 : 0.33), height: rWidth * (isPortrait ? 0.8 : 0.33) }]}
+            style={[styles.thumb, { width: thumbSize, height: thumbSize }]}
             resizeMode={'contain'}
             indicator={Progress.Circle}
             indicatorProps={{
